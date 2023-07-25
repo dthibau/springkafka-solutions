@@ -16,6 +16,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Repository;
 
 @Repository
+@Profile("file")
 public class FileDAO implements MovieDao {
 
 	@Value("${movie.file}")
