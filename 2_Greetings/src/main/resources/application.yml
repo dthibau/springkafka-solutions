@@ -1,0 +1,24 @@
+hello:
+  greeting: 'Bonjour '
+  
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+        
+logging:
+  level:
+    '[org.springframework.boot]': debug 
+  file:
+    name: server.log
+    path: .
+---
+spring:
+  config:
+    activate:
+      on-profile:
+      - prod
+      
+server:
+  port: 8000
