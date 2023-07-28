@@ -1,0 +1,20 @@
+spring:
+  jpa:
+    show-sql: true
+  datasource:
+    url: jdbc:h2:mem:ticketdb
+    username: sa
+---
+spring:
+  config:
+    activate:
+      on-profile:
+      - prod
+  docker:
+    compose:
+      profiles:
+        active: prod
+
+  jpa:
+    hibernate:
+      ddl-auto: update
