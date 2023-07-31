@@ -4,6 +4,7 @@ import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.formation.model.Coursier;
@@ -13,16 +14,19 @@ import org.formation.model.SendMode;
 public class KafkaProducerThread implements Runnable {
 
 	public static String TOPIC ="position";
+	KafkaProducer<String,Coursier> producer;
 	private long nbMessages,sleep;
 	private SendMode sendMode;
 	
-	private Coursier courier;
+	private Coursier coursier;
+	
+	private ProducerCallback callback = new ProducerCallback();
 	
 	public KafkaProducerThread(String id, long nbMessages, long sleep, SendMode sendMode) {
 		this.nbMessages = nbMessages;
 		this.sleep = sleep;
 		this.sendMode = sendMode;
-		this.courier = new Coursier(id, new Position(Math.random() + 45, Math.random() + 2));
+		this.coursier = new Coursier(id, new Position(Math.random() + 45, Math.random() + 2));
 		
 		_initProducer();
 		
@@ -32,9 +36,9 @@ public class KafkaProducerThread implements Runnable {
 	public void run() {
 		
 		for (int i =0; i< nbMessages; i++) {
-			courier.move();
+			coursier.move();
 			
-			ProducerRecord<String, Coursier> producerRecord = null;
+			ProducerRecord<String, Coursier> producerRecord = new ProducerRecord<String, Coursier>(TOPIC, coursier.getId(), coursier);
 			
 			switch (sendMode) {
 			case FIRE_AND_FORGET:
@@ -70,20 +74,29 @@ public class KafkaProducerThread implements Runnable {
 	
 	public void fireAndForget(ProducerRecord<String,Coursier> record) {
 		
-		// A compléter
-
+		producer.send(record);
+		System.out.println("FireAndForget  - " + record);
 		
 	}
 	
 	public void synchronous(ProducerRecord<String,Coursier> record) throws InterruptedException, ExecutionException {
-		// A compléter
+		RecordMetadata metaData = producer.send(record).get();
+		System.out.println("Synchronous  - Partition :" + metaData.partition() + " Offset : "+ metaData.offset());
 		
 	}
 	public void asynchronous(ProducerRecord<String,Coursier> record) {
-		// A compléter
+		producer.send(record,callback);
 	}
 	
 	private void _initProducer() {
+		Properties kafkaProps = new Properties();
+		kafkaProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:19092,localhost:19093,localhost:19094");
+		kafkaProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
+				"org.apache.kafka.common.serialization.StringSerializer");
+		kafkaProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
+				"org.formation.JsonSerializer");
+		producer = new KafkaProducer<String, Coursier>(kafkaProps);
 
+		// A compléter
 	}
 }
