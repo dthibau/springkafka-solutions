@@ -2,6 +2,7 @@ package org.formation.web;
 
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.formation.domain.Order;
 import org.formation.domain.OrderRepository;
 import org.formation.service.OrderService;
@@ -28,7 +29,7 @@ public class OrderController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Order createOrder(@Valid @RequestBody Order order) {
+	public Order createOrder(@Valid @RequestBody Order order)  {
 		
 		return orderService.createOrder(order);
 	}

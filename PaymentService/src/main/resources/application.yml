@@ -1,2 +1,18 @@
 server:
   port: 8182
+
+  
+spring:
+  kafka:
+    bootstrap-servers:
+    - localhost:19092
+    - localhost:19093
+    - localhost:19094
+    producer:
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer  
+      key-serializer: org.apache.kafka.common.serialization.LongSerializer
+    consumer:
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      key-deserializer: org.apache.kafka.common.serialization.LongDeserializer
+      properties:
+        spring.json.trusted.packages: '*'

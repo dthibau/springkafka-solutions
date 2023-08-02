@@ -1,5 +1,6 @@
 package org.formation.web;
 
+import org.formation.domain.PaymentException;
 import org.formation.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,7 +15,7 @@ public class PaymentController {
 	PaymentService paymentService;
 	
 	@PostMapping
-	public String processPayment(String fromAccount, String toAccount, Float amount) {
+	public String processPayment(String fromAccount, String toAccount, Float amount) throws PaymentException {
 		return paymentService.processPayment(fromAccount, toAccount, amount);
 	}
 }

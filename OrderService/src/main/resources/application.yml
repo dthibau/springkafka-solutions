@@ -17,4 +17,5 @@ spring:
 
 app:
   order-channel: 'orders'
-
+  payment-in-channel: 'payments-in'
+  payment-out-channel: 'payments-out'
