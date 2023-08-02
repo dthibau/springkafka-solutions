@@ -40,6 +40,7 @@ public class OrderControllerTest {
 		Address address = Address.builder().codePostal("75019").rue("Rébeval").ville("Paris").build();
 		DeliveryInformation deliveryInformation = DeliveryInformation.builder().pickAddress(address).deliveryAddress(address).build();
 		PaymentInformation paymentInformation = PaymentInformation.builder().fromAccount("FROM").toAccount("TO").amount(1000).build();
+
 		OrderItem orderItem = OrderItem.builder().refProduct("REF").price(10.0f).quantity(2).build();
 		List<OrderItem> orderItems = new ArrayList<>();
 		orderItems.add(orderItem);
