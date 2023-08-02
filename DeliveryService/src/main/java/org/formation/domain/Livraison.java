@@ -20,6 +20,10 @@ public class Livraison {
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
+
+	private long orderId;
+
+	private long ticketId;
 	
 	@Enumerated
 	LivraisonStatus status;

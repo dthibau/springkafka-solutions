@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/coursier")
+@RequestMapping("/api/coursiers")
 public class CoursierController {
 
 	@Autowired 
@@ -37,8 +37,8 @@ public class CoursierController {
 	}
 
 	@PatchMapping("{id}/move")
-	Coursier moveCoursier(@PathVariable("id") long id, @RequestParam("lat") double lat, @RequestParam("lon") double lon) {
+	void moveCoursier(@PathVariable("id") long id, @RequestParam("lat") double lat, @RequestParam("lon") double lon) {
 
-		return coursierService.moveCoursier(id, lat, lon);
+		coursierService.moveCoursier(id, lat, lon);
 	}
 }
