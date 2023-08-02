@@ -4,3 +4,18 @@ server:
 spring:
   jpa:
     show-sql: true
+    
+  kafka:   
+    producer:
+      acks: all
+      retries: 5
+      key-serializer: org.apache.kafka.common.serialization.LongSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer   
+      properties:
+        spring.json.trusted.packages: '*'
+    bootstrap-servers:
+    - localhost:19092, localhost:19093,localhost:19094
+      
+app:
+  coursier-channel: 'coursiers'
+  livraison-channel: 'livraisons'
