@@ -3,7 +3,7 @@ server:
   
 spring:
   jpa:
-    show-sql: true
+    show-sql: false
     
   kafka:   
     producer:
@@ -15,6 +15,19 @@ spring:
         spring.json.trusted.packages: '*'
     bootstrap-servers:
     - localhost:19092, localhost:19093,localhost:19094
+    consumer:
+      group-id: delivery-service
+      key-deserializer: org.apache.kafka.common.serialization.LongDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer    
+      properties:
+        spring.json.trusted.packages: '*'
+    listener:  
+      type: batch
+      concurrency: 10
+      client-id: position-consumer
+      ack-mode: count
+      ack-count: 500   
+      idle-between-polls: 100
       
 app:
   coursier-channel: 'coursiers'
