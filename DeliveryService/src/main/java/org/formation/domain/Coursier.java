@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Coursier {
 
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
 	private Long id;
 	
 	@Embedded

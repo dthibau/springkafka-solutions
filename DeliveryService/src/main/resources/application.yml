@@ -15,7 +15,22 @@ spring:
     - localhost:19092
     - localhost:19093
     - localhost:19094
-      
+
+    consumer:
+      group-id: delivery-service
+      key-deserializer: org.apache.kafka.common.serialization.LongDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: '*'
+      max-poll-records: 20000
+    listener:  
+      type: batch
+      concurrency: 10
+      client-id: delivery-service
+      ack-mode: count
+      ack-count: 500   
+      idle-between-polls: 0
+
 app:
   coursier-channel: 'coursiers'
   livraison-channel: 'livraisons'

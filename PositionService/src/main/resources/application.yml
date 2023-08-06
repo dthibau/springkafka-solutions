@@ -1,0 +1,21 @@
+server:
+  port: 8184
+  
+spring:
+
+    
+  kafka:   
+    producer:
+      acks: 1
+      retries: 0
+      key-serializer: org.apache.kafka.common.serialization.LongSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer   
+      properties:
+        spring.json.trusted.packages: 'org.formation.domain'
+    bootstrap-servers:
+    - localhost:19092
+    - localhost:19093
+    - localhost:19094
+
+app:
+  coursier-channel: 'coursiers'
