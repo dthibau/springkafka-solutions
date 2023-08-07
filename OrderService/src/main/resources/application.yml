@@ -13,8 +13,14 @@ spring:
     producer:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer 
       key-serializer: org.apache.kafka.common.serialization.LongSerializer
- 
+      transactionIdPrefix: "order-tx-"         
+
 app:
-  order-channel: orders
+  order-channel: 'orders'
   payment-in-channel: 'payments-in'
   payment-out-channel: 'payments-out'
+  
+logging:
+  level:
+    org.springframework.transaction: trace
+    org.springframework.kafka.transaction: debug
