@@ -20,6 +20,10 @@ public class EventHandler {
 
 	@Autowired 
 	CoursierRepository coursierRepository;
+
+	int process = 0;
+
+	int retry = 0;
 	
 	@KafkaHandler
 	public void handleCoursierPosition(Position position,
@@ -29,7 +33,20 @@ public class EventHandler {
 	
 	@KafkaHandler
 	public void handleCommande(String commande,
-			@Header(KafkaHeaders.RECEIVED_KEY) Long coursierId) {
-		log.info("Receiving commande");
+			@Header(KafkaHeaders.RECEIVED_KEY) Long coursierId,
+			@Header(KafkaHeaders.OFFSET) int offset) {
+		log.info("Receiving commande offset is " + offset);
+		if ( offset%10 == 0 ) {
+			throw new RuntimeException("Boom");
+		} else if ( offset%5 == 0 && retry < 3 ) {
+			log.info("Retrying offset " + offset);
+			retry++;
+			throw new RuntimeException("Boom");
+		} else if ( offset%5 == 0 && retry >= 3 ) {
+			retry=0;
+			process++;
+		}else {
+			process++;
+		}		
 	}
 }
