@@ -8,7 +8,10 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import lombok.extern.java.Log;
+
 @Service
+@Log
 public class EventHandler {
 
 	
@@ -19,6 +22,11 @@ public class EventHandler {
 	@SendTo
 	@Transactional("kafkaTransactionManager")
 	String processPayment(PaymentInformation paymentInformation ) throws PaymentException {
+		log.info("Receiving Payment Request with : " + paymentInformation);
+		if ( paymentInformation.getFromAccount() == null || paymentInformation.getToAccount() == null ) {
+			log.info("SKIPPING PROCESS of BadPaymentInfo ");
+			return "NOK";
+		}
 		return paymentService.processPayment(paymentInformation.getFromAccount(), paymentInformation.getToAccount(), paymentInformation.getAmount());
 	}
 }

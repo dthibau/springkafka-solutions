@@ -1,0 +1,17 @@
+server:
+  port: 8086
+  
+spring:
+  kafka:
+    bootstrap-servers:
+    - localhost:19092, localhost:19093, localhost:19094
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.LongSerializer  
+      value-serializer: org.apache.kafka.common.serialization.ByteArraySerializer
+
+
+      
+logging:
+  level:
+    org.springframework.transaction: trace
+    org.springframework.kafka.transaction: debug
