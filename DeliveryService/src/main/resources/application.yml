@@ -19,12 +19,12 @@ spring:
     consumer:
       group-id: delivery-service
       key-deserializer: org.apache.kafka.common.serialization.LongDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.DelegatingDeserializer
       properties:
         spring.json.trusted.packages: '*'
-      max-poll-records: 20000
-    listener:  
-      type: batch
+        spring.kafka.serialization.selector.config: "commande:org.apache.kafka.common.serialization.StringDeserializer, position:org.springframework.kafka.support.serializer.JsonDeserializer"
+    listener:
+#      type: batch
       concurrency: 10
       client-id: delivery-service
       ack-mode: count

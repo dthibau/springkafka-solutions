@@ -1,41 +1,36 @@
 package org.formation.service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.formation.domain.Coursier;
+import lombok.extern.slf4j.Slf4j;
 import org.formation.domain.CoursierRepository;
 import org.formation.domain.Position;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Service;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.java.Log;
 
 @Service
-@Log
+@Slf4j
+@KafkaListener(topics = "${app.coursier-channel}" )
 public class EventHandler {
 
 	@Autowired 
 	CoursierRepository coursierRepository;
 	
-	@KafkaListener(topics = "${app.coursier-channel}" )
-	public void handleCoursierPosition(List<Position> positions,
+	@KafkaHandler
+	public void handleCoursierPosition(Position position,
 			@Header(KafkaHeaders.RECEIVED_KEY) List<Long> coursierIds) {
-		Map<Long,Position> map = new HashMap<>();
-		for (int i=0; i< positions.size(); i++) {
-			map.put(coursierIds.get(i), positions.get(i));
-		}
-		log.info(positions.size() + " positions received  Pour " + map.size() + " coursiers");
-		
-		map.forEach((id,position) -> {
-			Coursier coursier = coursierRepository.findById(id).orElse(Coursier.builder().id(id).build());
-			coursier.setPosition(position);
-			coursierRepository.save(coursier);
-		});
+		log.info("Receiving position {} for coursier {}", 	position, coursierIds);
+	}
+	
+	@KafkaHandler
+	public void handleCommande(String commande,
+			@Header(KafkaHeaders.RECEIVED_KEY) Long coursierId) {
+		log.info("Receiving commande {} for coursier {}", 	commande, coursierId);
 	}
 }
