@@ -3,10 +3,7 @@ package org.formation.domain;
 import java.time.Instant;
 import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,6 +25,9 @@ public class OrderItem {
 	
 	private int quantity;
 	
-	
+	@Transient
+	public float getTotal() {
+		return price * quantity;
+	}
 	
 }

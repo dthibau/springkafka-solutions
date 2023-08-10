@@ -38,8 +38,8 @@ public class OrderControllerTest {
 	@Test
 	public void postOrderShouldReturnCreatedAndAnId() throws Exception {
 		Address address = Address.builder().codePostal("75019").rue("Rébeval").ville("Paris").build();
-		DeliveryInformation deliveryInformation = DeliveryInformation.builder().deliveryTime(LocalDateTime.now()).address(address).build();
-		PaymentInformation paymentInformation = PaymentInformation.builder().paymentToken("ATOKEN").build();
+		DeliveryInformation deliveryInformation = DeliveryInformation.builder().pickAddress(address).deliveryAddress(address).build();
+		PaymentInformation paymentInformation = PaymentInformation.builder().fromAccount("FROM").toAccount("TO").amount(1000).build();
 		OrderItem orderItem = OrderItem.builder().refProduct("REF").price(10.0f).quantity(2).build();
 		List<OrderItem> orderItems = new ArrayList<>();
 		orderItems.add(orderItem);
@@ -48,7 +48,7 @@ public class OrderControllerTest {
 		
 		this.mockMvc.perform(post("/api/orders").content(json).contentType(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isCreated())
 				.andExpect(jsonPath("$.id").exists())
-				.andExpect(content().string(containsString("ATOKEN")))
+				.andExpect(content().string(containsString("FROM")))
 				.andExpect(content().string(containsString("75019")));
 	}
 }

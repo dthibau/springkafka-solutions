@@ -1,7 +1,6 @@
 package org.formation.domain;
 
-import java.time.Instant;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,5 +13,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PaymentInformation {
 
-	private String paymentToken;
+	private String fromAccount;
+	private String toAccount;
+	
+	private float amount;
+	
+	private String transactionId;
 }

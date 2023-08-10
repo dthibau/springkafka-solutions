@@ -10,7 +10,7 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>org.formation</groupId>
-	<artifactId>3_RestFul</artifactId>
+	<artifactId>TicketService</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>3_RestFul</name>
 	<description>API RestFul</description>

@@ -1,5 +1,8 @@
 package org.formation.domain;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,8 +22,10 @@ import lombok.NoArgsConstructor;
 public class ProductRequest {
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonIgnore
 	private Long id;
 	@NotNull
+	@JsonAlias({"reference","refProduct"})
 	private String reference;
 	@Min(1)
 	private int quantity;
