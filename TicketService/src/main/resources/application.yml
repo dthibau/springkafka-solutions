@@ -1,12 +1,26 @@
 server:
   port: 8082
-  
+
 spring:
   jpa:
-    show-sql: true
+    show-sql: false
   datasource:
     url: jdbc:h2:mem:ticketdb
     username: sa
+
+  kafka:   
+    consumer:
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.LongDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer   
+      properties:
+        spring.json.trusted.packages: '*'
+    bootstrap-servers:
+    - localhost:9094
+
+app:
+  channel:
+    order-channel: 'orders'
 ---
 spring:
   config:
