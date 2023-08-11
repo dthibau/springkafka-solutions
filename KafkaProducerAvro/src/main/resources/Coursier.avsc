@@ -7,6 +7,11 @@
         "name": "id",
         "type": "string"
     },
+    { 
+		"name": "first_name",
+		"type": "string",
+		"default": "undefined"
+	},
     {
     	"name": "position",
     	"type": [
