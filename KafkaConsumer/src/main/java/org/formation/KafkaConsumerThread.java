@@ -1,9 +1,13 @@
 package org.formation;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.time.Duration;
+import java.util.Collections;
+import java.util.Properties;
 
+import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.common.errors.WakeupException;
 import org.formation.model.Coursier;
 
 public class KafkaConsumerThread implements Runnable {
@@ -27,17 +31,30 @@ public class KafkaConsumerThread implements Runnable {
 		try {
 			while (true) {
 
-				// A compléter, insérer dans la base, l'id du coursier et l'offset Kafka
-
-				
+				ConsumerRecords<String, Coursier> records = consumer.poll(Duration.ofMillis(100));
+				System.out.println("Consumer " + id + " vient de recevoir " + records.count() + " records");
+				for (var record : records) {
+					nbMessages++;
+					PostgresConfig.insererOffset(record.value().getId(), record.offset());
+				}
+				System.out.println("Consumer " + id + " a reçu " + nbMessages + " messages au total");
 			}
-		} finally {
+		} catch (WakeupException e) {
+			System.out.println("CLOSING : Consumer " + id + " a reçu " + nbMessages + " messages au total");
+		}  finally {
 			consumer.close();
 		}
-
 	}
 
 	private void _initConsumer() {
+		Properties kafkaProps = new Properties();
+		kafkaProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:19092,localhost:19093,localhost:19094");
+		kafkaProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
+		kafkaProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.formation.JsonDeserializer");
+		kafkaProps.put(ConsumerConfig.GROUP_ID_CONFIG, "position-consumer");
+		kafkaProps.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
+		consumer = new KafkaConsumer<String, Coursier>(kafkaProps);
+		consumer.subscribe(Collections.singletonList(TOPIC));
 	}
 }
