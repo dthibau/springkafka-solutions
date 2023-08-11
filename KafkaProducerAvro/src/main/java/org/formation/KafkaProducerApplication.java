@@ -42,6 +42,15 @@ public class KafkaProducerApplication {
 			System.exit(1);
 		}
 
+		try {
+			_initRegistry();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (RestClientException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		ExecutorService executorService = Executors.newFixedThreadPool(nbThreads);
 		
 		long top = System.currentTimeMillis();
