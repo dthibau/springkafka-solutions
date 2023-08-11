@@ -1,16 +1,19 @@
 package org.formation;
 
 import java.time.Duration;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Properties;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.consumer.ConsumerRebalanceListener;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.errors.WakeupException;
 import org.formation.model.Coursier;
 
-public class KafkaConsumerThread implements Runnable {
+public class KafkaConsumerThread implements Runnable, ConsumerRebalanceListener {
 
 	public static String TOPIC = "position";
 	KafkaConsumer<String, Coursier> consumer;
@@ -57,6 +60,17 @@ public class KafkaConsumerThread implements Runnable {
 		kafkaProps.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
 		consumer = new KafkaConsumer<String, Coursier>(kafkaProps);
-		consumer.subscribe(Collections.singletonList(TOPIC));
+		consumer.subscribe(Collections.singletonList(TOPIC),this);
+	}
+
+	@Override
+	public void onPartitionsRevoked(Collection<TopicPartition> partitions) {
+		System.out.println("Process " +  ProcessHandle.current().pid() + " Thread " +id + " Revocation of " + partitions);
+		
+	}
+
+	@Override
+	public void onPartitionsAssigned(Collection<TopicPartition> partitions) {
+		System.out.println("Process " +  ProcessHandle.current().pid() + " Thread " +id + " Assignement of " + partitions);		
 	}
 }
