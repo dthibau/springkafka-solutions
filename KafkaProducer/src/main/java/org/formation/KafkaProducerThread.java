@@ -13,6 +13,8 @@ import org.formation.model.SendMode;
 
 public class KafkaProducerThread implements Runnable {
 
+	public static int NB_BATCH=10;
+	
 	public static String TOPIC ="position";
 	KafkaProducer<String,Coursier> producer;
 	private long nbMessages,sleep;
@@ -34,8 +36,14 @@ public class KafkaProducerThread implements Runnable {
 
 	@Override
 	public void run() {
+		int nbBatch=0;
+		producer.initTransactions();
 		
 		for (int i =0; i< nbMessages; i++) {
+			
+			if (nbBatch == 0 ) {
+				producer.beginTransaction();
+			}
 			coursier.move();
 			
 			ProducerRecord<String, Coursier> producerRecord = new ProducerRecord<String, Coursier>(TOPIC, coursier.getId(), coursier);
@@ -61,7 +69,11 @@ public class KafkaProducerThread implements Runnable {
 			default:
 				break;
 			}
-			
+			nbBatch++;
+			if ( nbBatch == NB_BATCH ) {
+				producer.commitTransaction();
+				nbBatch=0;
+			}
 			
 			try {
 				Thread.sleep(sleep);
@@ -95,6 +107,9 @@ public class KafkaProducerThread implements Runnable {
 				"org.apache.kafka.common.serialization.StringSerializer");
 		kafkaProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
 				"org.formation.JsonSerializer");
+		kafkaProps.put(ProducerConfig.TRANSACTIONAL_ID_CONFIG, "tx-position");
+		kafkaProps.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, "true");
+
 		producer = new KafkaProducer<String, Coursier>(kafkaProps);
 
 		// A compléter
