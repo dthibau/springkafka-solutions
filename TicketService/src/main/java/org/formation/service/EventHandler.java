@@ -4,6 +4,8 @@ import org.formation.controller.OrderDto;
 import org.formation.event.OrderEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.Acknowledgment;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -21,17 +23,15 @@ public class EventHandler {
     
     @Autowired
     ObjectMapper mapper;
-    
-    
-    private int nbEvent=0;
 
     @KafkaListener(topics="#{'${app.channel.order-channel}'}", id="ticket-service")
-    public void handleOrderEvent(OrderEvent orderEvent) throws JsonMappingException, JsonProcessingException {
-    	log.info("Consuming orderEvent " + (nbEvent++) + " consumed");
+    public void handleOrderEvent(@Payload OrderEvent orderEvent, Acknowledgment acknowledgment) throws JsonMappingException, JsonProcessingException {
         switch (orderEvent.getType() ) {
-            case "ORDER_CREATED":
+            case "ORDER_PAID":
             	OrderDto orderDto = mapper.readValue(orderEvent.getPayload(), OrderDto.class);
+            	log.info("Order paid creating Ticket with "+ orderDto);
                 ticketService.createTicket(orderDto);
+                acknowledgment.acknowledge();
                 break;
 
         }

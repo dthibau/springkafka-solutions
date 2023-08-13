@@ -1,6 +1,6 @@
 server:
   port: 8082
-
+  
 spring:
   jpa:
     show-sql: false
@@ -16,7 +16,9 @@ spring:
       properties:
         spring.json.trusted.packages: '*'
     bootstrap-servers:
-    - localhost:9094
+    - localhost:19092, localhost:19093, localhost:19094
+    listener:
+      ack-mode: manual-immediate
 
 app:
   channel:

@@ -16,9 +16,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class OrderDto {
 	@Min(1)
-	@JsonAlias({ "id", "orderId" })
-	long orderId;
-
-	@JsonAlias({ "products", "orderItems" })
-	ProductRequest[] products;
+	@JsonAlias({"id","orderId"})
+    long orderId;
+	@JsonAlias({"products","orderItems"})
+    ProductRequest[] products;
 }
