@@ -58,6 +58,8 @@ public class KafkaConsumerThread implements Runnable, ConsumerRebalanceListener 
 		kafkaProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.formation.JsonDeserializer");
 		kafkaProps.put(ConsumerConfig.GROUP_ID_CONFIG, "position-consumer");
 		kafkaProps.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+//		kafkaProps.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG,"false");
+		kafkaProps.put(ConsumerConfig.ISOLATION_LEVEL_CONFIG, "read_committed");
 
 		consumer = new KafkaConsumer<String, Coursier>(kafkaProps);
 		consumer.subscribe(Collections.singletonList(TOPIC),this);
