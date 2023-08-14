@@ -32,6 +32,9 @@ public class KafkaConfig {
 	    
 	    props.put(ProducerConfig.RETRIES_CONFIG, 5);
 	    props.put(ProducerConfig.ACKS_CONFIG, "all");
+	    props.put("security.protocol", "SSL");
+	    props.put("ssl.truststore.location", "/home/dthibau/Formations/SpringKafka/github/solutions/ssl/truststore/kafka.truststore.jks");
+	    props.put("ssl.truststore.password", "secret");
 	    return props;
 	}
 	

@@ -15,6 +15,11 @@ spring:
         spring.json.trusted.packages: '*'
     bootstrap-servers:
     - localhost:19092, localhost:19093,localhost:19094
+    security:
+      protocol: SSL
+    ssl:
+      trust-store-location: file:///home/dthibau/Formations/SpringKafka/github/solutions/ssl/truststore/kafka.truststore.jks
+      trust-store-password: secret
 
 app:
   coursier-channel: 'coursiers'
