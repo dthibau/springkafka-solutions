@@ -20,6 +20,6 @@ spring:
     ssl:
       trust-store-location: file:///home/dthibau/Formations/SpringKafka/github/solutions/ssl/truststore/kafka.truststore.jks
       trust-store-password: secret
-
+    
 app:
   coursier-channel: 'coursiers'
