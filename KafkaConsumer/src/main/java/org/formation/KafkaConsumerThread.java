@@ -27,7 +27,8 @@ public class KafkaConsumerThread implements Runnable {
 		try {
 			while (true) {
 
-				// A compléter
+				// A compléter, insérer dans la base, l'id du coursier et l'offset Kafka
+
 				
 			}
 		} finally {
