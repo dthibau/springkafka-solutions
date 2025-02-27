@@ -7,10 +7,10 @@
 	<version>0.0.1-SNAPSHOT</version>
 
 	<properties>
-		<maven.compiler.target>17</maven.compiler.target>
-		<maven.compiler.source>17</maven.compiler.source>
-		<kafka-version>3.5.1</kafka-version>
-		<jackson-version>2.15.2</jackson-version>
+		<maven.compiler.target>21</maven.compiler.target>
+		<maven.compiler.source>21</maven.compiler.source>
+		<kafka-version>3.8.1</kafka-version>
+		<jackson-version>2.18.2</jackson-version>
 	</properties>
 
 	<dependencies>
