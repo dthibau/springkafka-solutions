@@ -16,7 +16,7 @@ import io.confluent.kafka.schemaregistry.client.rest.exceptions.RestClientExcept
 
 public class KafkaProducerApplication {
 	public static String TOPIC ="avro-position";
-	public static String REGISTRY_URL = "http://localhost:9091";
+	public static String REGISTRY_URL = "http://localhost:8081";
 	
 	public static void main(String[] args) throws URISyntaxException {
 
