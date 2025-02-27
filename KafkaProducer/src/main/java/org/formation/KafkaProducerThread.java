@@ -3,10 +3,7 @@ package org.formation;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.clients.producer.RecordMetadata;
+import org.apache.kafka.clients.producer.*;
 import org.formation.model.Coursier;
 import org.formation.model.Position;
 import org.formation.model.SendMode;
@@ -19,9 +16,7 @@ public class KafkaProducerThread implements Runnable {
 	private SendMode sendMode;
 	
 	private Coursier coursier;
-	
-	private ProducerCallback callback = new ProducerCallback();
-	
+
 	public KafkaProducerThread(String id, long nbMessages, long sleep, SendMode sendMode) {
 		this.nbMessages = nbMessages;
 		this.sleep = sleep;
@@ -85,7 +80,17 @@ public class KafkaProducerThread implements Runnable {
 		
 	}
 	public void asynchronous(ProducerRecord<String,Coursier> record) {
-		producer.send(record,callback);
+
+		producer.send(record, new Callback() {
+			@Override
+			public void onCompletion(RecordMetadata recordMetadata, Exception e) {
+				if (e != null) {
+					e.printStackTrace();
+				} else {
+					System.out.println("Asynchronous  - Partition :" + recordMetadata.partition() + " Offset : "+ recordMetadata.offset());
+				}
+			}
+		});
 	}
 	
 	private void _initProducer() {
