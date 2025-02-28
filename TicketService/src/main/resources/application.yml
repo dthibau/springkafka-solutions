@@ -4,6 +4,22 @@ server:
 spring:
   datasource:
     url: jdbc:h2:mem:testdb
+  kafka:
+    consumer:
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.LongDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: 'org.formation.event'
+    bootstrap-servers:
+      - localhost:19092
+      - localhost:19093
+      - localhost:19094
+    listener:
+      ack-mode: manual_immediate
+      concurrency: 3
 
+app:
+  order-channel: 'orders'
 
 
