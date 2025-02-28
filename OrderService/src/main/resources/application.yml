@@ -1,8 +1,20 @@
 server:
   port: 8180
 
-spring:   
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+
   kafka:
     bootstrap-servers:
-    - localhost:19092,localhost:19093,localhost:19094
+    - localhost:19092
+    - localhost:19093
+    - localhost:19094
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      key-serializer: org.apache.kafka.common.serialization.LongSerializer
+
+app:
+  order-channel: 'orders'
 
