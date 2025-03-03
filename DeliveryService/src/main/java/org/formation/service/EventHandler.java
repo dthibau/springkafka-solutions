@@ -21,7 +21,7 @@ public class EventHandler {
 
 	@Autowired 
 	CoursierRepository coursierRepository;
-	
+	int process = 0;
 	@KafkaHandler
 	public void handleCoursierPosition(Position position,
 			@Header(KafkaHeaders.RECEIVED_KEY) List<Long> coursierIds) {
@@ -30,7 +30,13 @@ public class EventHandler {
 	
 	@KafkaHandler
 	public void handleCommande(String commande,
-			@Header(KafkaHeaders.RECEIVED_KEY) Long coursierId) {
+			@Header(KafkaHeaders.RECEIVED_KEY) Long coursierId,
+							   @Header(KafkaHeaders.OFFSET) int offset) {
 		log.info("Receiving commande {} for coursier {}", 	commande, coursierId);
+		if ( offset%10 == 0 ) {
+			throw new RuntimeException("Boom");
+		} else {
+			process++;
+		}
 	}
 }
