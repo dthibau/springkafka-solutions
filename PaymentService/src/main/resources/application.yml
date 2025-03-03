@@ -13,10 +13,11 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.LongSerializer
       transaction-id-prefix: 'payment-tx-'
     consumer:
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
       key-deserializer: org.apache.kafka.common.serialization.LongDeserializer
       properties:
         spring.json.trusted.packages: '*'
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
       isolation-level: read_committed
 
 logging:
