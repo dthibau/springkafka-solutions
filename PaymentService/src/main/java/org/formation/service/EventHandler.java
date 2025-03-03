@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class EventHandler {
@@ -16,6 +17,7 @@ public class EventHandler {
 	
 	@KafkaListener(id="payment-service", topics = "payments-in")
 	@SendTo
+	@Transactional("kafkaTransactionManager")
 	String processPayment(PaymentInformation paymentInformation ) throws PaymentException {
 		return paymentService.processPayment(paymentInformation.getFromAccount(), paymentInformation.getToAccount(), paymentInformation.getAmount());
 	}

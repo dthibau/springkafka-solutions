@@ -45,7 +45,7 @@ public class EventService {
     ObjectMapper mapper;
 
 
-    @Scheduled(fixedDelay = 1l, timeUnit = TimeUnit.MINUTES)
+    @Scheduled(fixedDelay = 10l, timeUnit = TimeUnit.SECONDS)
     @Transactional("kafkaTransactionManager")
     public void relayEvents() {
         eventRepository.findAll()
