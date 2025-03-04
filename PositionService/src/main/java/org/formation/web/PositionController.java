@@ -2,7 +2,9 @@ package org.formation.web;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.header.Header;
 import org.apache.kafka.common.header.internals.RecordHeader;
@@ -21,6 +23,7 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/api/positions")
+@Slf4j
 public class PositionController {
 
 
@@ -43,7 +46,7 @@ public class PositionController {
 	}
 	
 	@PatchMapping("{id}/{commande}")
-	Mono<Void> commande(@PathVariable("id") long id, @PathVariable("commande") String commande) {
+	Mono<Void> commande(@PathVariable("id") long id, @PathVariable("commande") String commande) throws ExecutionException, InterruptedException {
 		
 		List <Header> headers = new ArrayList<>();
 		headers.add(new RecordHeader(DelegatingSerializer.VALUE_SERIALIZATION_SELECTOR, "commande".getBytes()));

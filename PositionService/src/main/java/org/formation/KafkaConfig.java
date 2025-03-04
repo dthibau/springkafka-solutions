@@ -13,7 +13,7 @@ import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.DelegatingSerializer;
 
 
-@Configuration
+// @Configuration
 public class KafkaConfig {
 	
 	@Bean
@@ -24,7 +24,7 @@ public class KafkaConfig {
 	@Bean
 	public Map<String, Object> producerConfigs() {
 	    Map<String, Object> props = new HashMap<>();
-	    props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:19092, localhost:19093,localhost:19094");
+	    //props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:19092, localhost:19093,localhost:19094");
 	    props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, LongSerializer.class);
 	    props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, DelegatingSerializer.class);
 	    props.put(DelegatingSerializer.VALUE_SERIALIZATION_SELECTOR_CONFIG,
