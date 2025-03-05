@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.config.TopicBuilder;
@@ -55,11 +56,13 @@ public class KafkaConfig {
     }
 
     @Bean
+    @Profile("!testcontainers")
     NewTopic coursierTopic() {
         return TopicBuilder.name(coursierChannel).partitions(10).replicas(2).build();
     }
 
     @Bean
+    @Profile("!testcontainers")
     NewTopic livraisonTopic() {
         return TopicBuilder.name(livraisonChannel).partitions(1).replicas(3)
                 .config(TopicConfig.MIN_IN_SYNC_REPLICAS_CONFIG, String.valueOf(2)).build();
